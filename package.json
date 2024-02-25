@@ -1,0 +1,16 @@
+{
+  "name": "cache-bench",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Daniel Rinehart <danielr@neophi.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.2",
+    "@types/mersenne-twister": "^1.1.7",
+    "@types/node": "^20.11.20",
+    "lru-cache": "^10.2.0",
+    "mersenne-twister": "^1.1.0",
+    "mnemonist": "^0.39.8",
+    "tsx": "^4.7.1"
+  }
+}
