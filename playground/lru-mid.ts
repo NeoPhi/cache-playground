@@ -1,3 +1,6 @@
+// VERY INEFFICIENT ALGORITHM
+// Implements approach outlined in
+// https://medium.com/@arpitbhayani/what-makes-mysql-lru-cache-scan-resistant-a73364f286d7
 export class LRUMid<K, V> {
   #oldMaxSize: number;
   #youngMaxSize: number;
@@ -86,10 +89,5 @@ export class LRUMid<K, V> {
         return this;
       },
     };
-  }
-
-  debug() {
-    console.log(JSON.stringify(Array.from(this.#old.entries())));
-    console.log(JSON.stringify(Array.from(this.#young.entries())));
   }
 }

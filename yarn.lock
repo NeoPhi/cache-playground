@@ -117,6 +117,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.19.12.tgz#c57c8afbb4054a3ab8317591a0b7320360b444ae"
   integrity sha512-T1QyPSDCyMXaO3pzBkF96E8xMkiRYbUEZADd29SyPGabqxMViNoii+NcK7eWJAEoU6RZyEm5lVSIjTmcdoB9HA==
 
+"@synap/sig-fig-calculator@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@synap/sig-fig-calculator/-/sig-fig-calculator-3.2.3.tgz#727849225c5303b2f60087affa6db4f210ccf5db"
+  integrity sha512-tM1NqTStA1YSpVUQ8f7TPmc8Gjug70kUrCsP41UoNpED/6Fvw37ogFQCoePfHtuFikX4QZggpMBO5b2axcmi4Q==
+
 "@tsconfig/node20@^20.1.2":
   version "20.1.2"
   resolved "https://registry.yarnpkg.com/@tsconfig/node20/-/node20-20.1.2.tgz#b93128c411d38e9507035255195bc8a6718541e3"
@@ -212,7 +217,17 @@ tsx@^4.7.1:
   optionalDependencies:
     fsevents "~2.3.3"
 
+typescript@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
+
 undici-types@~5.26.4:
   version "5.26.5"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
+
+zipfian-integer@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/zipfian-integer/-/zipfian-integer-1.0.1.tgz#7c346b15557587d877a00c3eb517ec61df2fbc31"
+  integrity sha512-1i5HSs9TBJ1YwwvgusFsWjNwlY0O9XBDxXmNmvI1AtJGiecjMcT8/asnMyi/LwphcxQgdYByWSJlM1d+299xDg==

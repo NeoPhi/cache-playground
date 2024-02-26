@@ -1,3 +1,4 @@
+import { SigFig } from "@synap/sig-fig-calculator";
 import * as readline from "node:readline/promises";
 import {
   CACHES,
@@ -19,11 +20,14 @@ class Stats {
 
   report() {
     const totalCount = this.hitCount + this.missCount;
-    console.log(
-      `${this.name} ${this.hitCount} / ${totalCount} ${
-        (this.hitCount / totalCount) * 100
-      }%`
-    );
+    return {
+      name: this.name,
+      hitCount: this.hitCount,
+      hitRatio: `${SigFig.divide(this.hitCount.toString(), totalCount)
+        .multiply(100)
+        .toFixed()}%`,
+      // hitRatio: `${((this.hitCount / totalCount) * 100).toFixed(3)}%`,
+    };
   }
 }
 
@@ -49,9 +53,14 @@ class Caches {
   }
 
   report() {
-    this.stats.forEach((stats) => {
-      stats.report();
-    });
+    console.table(
+      this.stats.reduce((memo, stats) => {
+        const cacheStats = stats.report();
+        memo[cacheStats.name] = cacheStats;
+        return memo;
+      }, {} as { [key: string]: {} }),
+      ["hitCount", "hitRatio"]
+    );
   }
 }
 
@@ -68,4 +77,4 @@ async function exercise(names: (keyof typeof CACHES)[]) {
   caches.report();
 }
 
-exercise(parseCacheNames(process.argv[2])).then(() => process.exit(0));
+exercise(parseCacheNames()).then(() => process.exit(0));

@@ -1,3 +1,4 @@
+// Builds on concepts outlined in https://yomguithereal.github.io/posts/lru-cache
 export class LRUUnit<K, V> {
   #maxSize;
   #size = 0;
@@ -73,14 +74,6 @@ export class LRUUnit<K, V> {
     }
   }
 
-  debug() {
-    console.log(JSON.stringify(Array.from(this.#map.entries())));
-    console.log(JSON.stringify(this.#headIndex));
-    console.log(JSON.stringify(this.#tailIndex));
-    console.log(JSON.stringify(this.#nextIndexes));
-    console.log(JSON.stringify(this.#previousIndexes));
-  }
-
   #evict() {
     this.#removeNode(this.#tailIndex);
   }
@@ -149,11 +142,3 @@ export class LRUUnit<K, V> {
     return freeIndex;
   }
 }
-
-// const test = new LRUUnit<string, string>(3);
-// test.set("a", "a");
-// test.set("b", "b");
-// test.set("c", "c");
-// test.debug();
-// test.get("a");
-// test.debug();

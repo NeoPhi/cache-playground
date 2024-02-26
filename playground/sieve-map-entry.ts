@@ -8,6 +8,7 @@ class Entry<V> {
   }
 }
 
+// Minimal implementation relying on Map key iteration semantics
 export class Sieve<K, V> {
   readonly #maxSize: number;
 

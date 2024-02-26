@@ -1,16 +1,22 @@
 {
-  "name": "cache-bench",
+  "name": "cache-playground",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Daniel Rinehart <danielr@neophi.com>",
   "license": "MIT",
+  "scripts": {
+    "dist": "tsc"
+  },
   "devDependencies": {
+    "@synap/sig-fig-calculator": "^3.2.3",
     "@tsconfig/node20": "^20.1.2",
     "@types/mersenne-twister": "^1.1.7",
     "@types/node": "^20.11.20",
     "lru-cache": "^10.2.0",
     "mersenne-twister": "^1.1.0",
     "mnemonist": "^0.39.8",
-    "tsx": "^4.7.1"
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "zipfian-integer": "^1.0.1"
   }
 }
