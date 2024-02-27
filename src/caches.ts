@@ -1,10 +1,10 @@
 import { LRUCache } from "lru-cache";
-import MnemonistLRUMapDelete from "mnemonist/lru-map-with-delete";
-import { LRUMid } from "../playground/lru-mid";
-import { LRUUnit } from "../playground/lru-uint";
-import { Sieve as SieveMapEntry } from "../playground/sieve-map-entry";
-import { Sieve as SieveUint } from "../playground/sieve-uint";
-import { parseIntFromEnv } from "./utilities";
+import mnemonist from "mnemonist";
+import { LRUMid } from "../playground/lru-mid.js";
+import { LRUUnit } from "../playground/lru-uint.js";
+import { Sieve as SieveMapEntry } from "../playground/sieve-map-entry.js";
+import { Sieve as SieveUint } from "../playground/sieve-uint.js";
+import { parseIntFromEnv } from "./utilities.js";
 
 export type Key = string;
 export type Value = string;
@@ -23,7 +23,7 @@ export const CACHES = {
   "lru-cache": (n: number) => new LRUCache<Key, Value>({ max: n }),
   "playground/lru-uint": (n: number) => new LRUUnit<Key, Value>(n),
   "mnemonist/lru-map-with-delete": (n: number) =>
-    new MnemonistLRUMapDelete<Key, Value>(n),
+    new mnemonist.LRUMapWithDelete<Key, Value>(n),
 
   // LRU Mid Point Insertion
   "playground/lru-mid": (n: number) => new LRUMid<Key, Value>(n),
@@ -35,18 +35,30 @@ export const CACHES = {
 
 export type CacheName = keyof typeof CACHES;
 
+export function parseCacheName(): CacheName {
+  const cacheName = process.env["CACHE_NAME"];
+  if (!cacheName || !Object.hasOwn(CACHES, cacheName)) {
+    throw new Error(`Cache named '${cacheName}' not found.`);
+  }
+  console.warn(`Using ${cacheName} for CACHE_NAME`);
+  return cacheName as CacheName;
+}
+
 export function parseCacheNames(): CacheName[] {
+  let cacheNames: CacheName[];
   const names = process.env["CACHE_NAMES"];
   if (!names) {
-    return Object.keys(CACHES) as CacheName[];
+    cacheNames = Object.keys(CACHES) as CacheName[];
+  } else {
+    cacheNames = names.split(",") as CacheName[];
+    cacheNames.forEach((cacheName) => {
+      if (!Object.hasOwn(CACHES, cacheName)) {
+        throw new Error(`Cache named '${cacheName}' not found.`);
+      }
+    });
   }
-  const cacheNames = names.split(",");
-  cacheNames.forEach((cacheName) => {
-    if (!Object.hasOwn(CACHES, cacheName)) {
-      throw new Error(`Cache named '${cacheName}' not found.`);
-    }
-  });
-  return cacheNames as CacheName[];
+  console.warn(`Using ${cacheNames} for CACHE_NAMES`);
+  return cacheNames;
 }
 
 export function parseCacheSize(): number {

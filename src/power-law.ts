@@ -1,5 +1,5 @@
 import MersenneTwister from "mersenne-twister";
-import { parseFloatFromEnv, parseIntFromEnv } from "./utilities";
+import { parseFloatFromEnv, parseIntFromEnv } from "./utilities.js";
 
 const xMin = parseIntFromEnv("X_MIN", 5);
 const alpha = parseFloatFromEnv("ALPHA", 2.5);

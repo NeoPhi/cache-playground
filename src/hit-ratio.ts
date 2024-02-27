@@ -7,7 +7,7 @@ import {
   Key,
   parseCacheNames,
   parseCacheSize,
-} from "./caches";
+} from "./caches.js";
 
 class Stats {
   readonly name: string;
@@ -26,7 +26,6 @@ class Stats {
       hitRatio: `${SigFig.divide(this.hitCount.toString(), totalCount)
         .multiply(100)
         .toFixed()}%`,
-      // hitRatio: `${((this.hitCount / totalCount) * 100).toFixed(3)}%`,
     };
   }
 }
@@ -64,7 +63,7 @@ class Caches {
   }
 }
 
-async function exercise(names: (keyof typeof CACHES)[]) {
+async function exercise(names: CacheName[]) {
   const file = readline.createInterface({
     input: process.stdin,
   });
@@ -77,4 +76,4 @@ async function exercise(names: (keyof typeof CACHES)[]) {
   caches.report();
 }
 
-exercise(parseCacheNames()).then(() => process.exit(0));
+await exercise(parseCacheNames());

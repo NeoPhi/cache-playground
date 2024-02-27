@@ -1,6 +1,6 @@
 import MersenneTwister from "mersenne-twister";
 import zipfian from "zipfian-integer";
-import { parseFloatFromEnv, parseIntFromEnv } from "./utilities";
+import { parseFloatFromEnv, parseIntFromEnv } from "./utilities.js";
 
 const xMin = parseIntFromEnv("X_MIN", 1);
 const xMax = parseIntFromEnv("X_MAX", 1000);
