@@ -34,6 +34,7 @@ async function exercise(cacheName: CacheName) {
     console.log(
       JSON.stringify({
         nodeVersion: version,
+        date: new Date(),
         workload: process.env.OPS_WORKLOAD || "not specified",
         cacheName,
         cacheSize,
