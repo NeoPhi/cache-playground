@@ -53,6 +53,8 @@ export class Sieve<K, V> {
 
   clear() {
     this.#map.clear();
+    this.#iterator = this.#map.entries();
+    this.#result = this.#iterator.next();
   }
 
   keys() {

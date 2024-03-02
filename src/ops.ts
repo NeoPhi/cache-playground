@@ -1,40 +1,68 @@
-import { hrtime } from "node:process";
+import { hrtime, version } from "node:process";
 import * as readline from "node:readline/promises";
 import { CACHES, CacheName, parseCacheName, parseCacheSize } from "./caches.js";
 
-async function exercise(name: CacheName) {
+const INCR = 1n;
+
+async function exercise(cacheName: CacheName) {
   const file = readline.createInterface({
     input: process.stdin,
   });
-
-  let getCount = 0;
+  let getCount = 0n;
   let getTotal = 0n;
-  let setCount = 0;
+  let setCount = 0n;
   let setTotal = 0n;
-  const cache = CACHES[name](parseCacheSize());
+  const cacheSize = parseCacheSize();
+  const cache = CACHES[cacheName](cacheSize);
   for await (const key of file) {
     if (key) {
-      getCount += 1;
       const getStart = hrtime.bigint();
       const value = cache.get(key);
       const getEnd = hrtime.bigint();
+      getCount += INCR;
       getTotal += getEnd - getStart;
       if (!value) {
-        setCount += 1;
         const setStart = hrtime.bigint();
         cache.set(key, key);
         const setEnd = hrtime.bigint();
+        setCount += INCR;
         setTotal += setEnd - setStart;
       }
     }
   }
-  console.table({
-    name,
-    getCount,
-    getNanoseconds: getTotal.toLocaleString(),
-    setCount,
-    setNanoseconds: setTotal.toLocaleString(),
-  });
+  if (process.env.OPS_OUTPUT === "json") {
+    console.log(
+      JSON.stringify({
+        nodeVersion: version,
+        workload: process.env.OPS_WORKLOAD || "not specified",
+        cacheName,
+        cacheSize,
+        get: {
+          count: Number(getCount),
+          countString: getCount.toString(),
+          mean: Number(getTotal / getCount),
+          meanString: (getTotal / getCount).toString(),
+        },
+        set: {
+          count: Number(setCount),
+          countString: setCount.toString(),
+          mean: Number(setTotal / setCount),
+          meanString: (setTotal / setCount).toString(),
+        },
+      })
+    );
+  } else {
+    console.table({
+      get: {
+        count: getCount.toLocaleString(),
+        mean: (getTotal / getCount).toLocaleString(),
+      },
+      set: {
+        count: setCount.toLocaleString(),
+        mean: (setTotal / setCount).toLocaleString(),
+      },
+    });
+  }
 }
 
 await exercise(parseCacheName());
