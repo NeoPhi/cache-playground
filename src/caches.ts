@@ -13,6 +13,7 @@ export interface Cache<K = Key, V = Value> {
   get(key: K): V | undefined;
   set(key: K, value: V): void;
   keys(): IterableIterator<K>;
+  delete(key: K): void;
 }
 
 export type CacheFactory<K, V> = (maxSize: number) => Cache<K, V>;
@@ -24,10 +25,8 @@ export const CACHES = {
   // LRU
   "lru-cache": (n: number) => new LRUCache<Key, Value>({ max: n }),
   "playground/lru-uint": (n: number) => new LRUUnit<Key, Value>(n),
-  "mnemonist/lru-cache": (n: number) => new mnemonist.LRUCache<Key, Value>(n),
   "mnemonist/lru-cache-with-delete": (n: number) =>
     new mnemonist.LRUCacheWithDelete<Key, Value>(n),
-  "mnemonist/lru-map": (n: number) => new mnemonist.LRUMap<Key, Value>(n),
   "mnemonist/lru-map-with-delete": (n: number) =>
     new mnemonist.LRUMapWithDelete<Key, Value>(n),
 
