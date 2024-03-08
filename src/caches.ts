@@ -6,6 +6,7 @@ import { Sieve as SieveMapEntry } from "../playground/sieve-map-entry.js";
 import { Sieve as SieveUint } from "../playground/sieve-uint.js";
 import { parseIntFromEnv } from "./utilities.js";
 import { lru } from "tiny-lru";
+import QuickLRU from "quick-lru";
 
 export type Key = string;
 export type Value = string;
@@ -25,6 +26,7 @@ export const CACHES = {
 
   // LRU
   "tiny-lru": (n: number) => lru(n),
+  "quick-lru": (n: number) => new QuickLRU({ maxSize: n }),
   "lru-cache": (n: number) => new LRUCache<Key, Value>({ max: n }),
   "playground/lru-uint": (n: number) => new LRUUnit<Key, Value>(n),
   "mnemonist/lru-cache-with-delete": (n: number) =>
