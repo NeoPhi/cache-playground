@@ -14,19 +14,22 @@ export type Value = string;
 export interface Cache<K = Key, V = Value> {
   get(key: K): V | undefined;
   set(key: K, value: V): void;
-  keys(): IterableIterator<K>;
   delete(key: K): void;
 }
 
-export type CacheFactory<K, V> = (maxSize: number) => Cache<K, V>;
+export interface CacheKeys<K = Key, V = Value> extends Cache<K, V> {
+  keys(): IterableIterator<K>;
+}
+
+export type CacheFactory<K, V, C extends Cache<K, V>> = (maxSize: number) => C;
 
 export const CACHES = {
   // Unlimited
   map: () => new Map(),
 
   // LRU
-  "tiny-lru": (n: number) => lru(n),
-  "quick-lru": (n: number) => new QuickLRU({ maxSize: n }),
+  "tiny-lru": (n: number) => lru<Value>(n),
+  "quick-lru": (n: number) => new QuickLRU<Key, Value>({ maxSize: n }),
   "lru-cache": (n: number) => new LRUCache<Key, Value>({ max: n }),
   "playground/lru-uint": (n: number) => new LRUUnit<Key, Value>(n),
   "mnemonist/lru-cache-with-delete": (n: number) =>

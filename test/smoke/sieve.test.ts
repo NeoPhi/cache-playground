@@ -1,7 +1,9 @@
 import { deepStrictEqual } from "node:assert";
-import { CacheFactory } from "../../src/caches.js";
+import { CacheFactory, CacheKeys } from "../../src/caches.js";
 
-export function smokeTest(cacheFactory: CacheFactory<string, string>) {
+export function smokeTest(
+  cacheFactory: CacheFactory<string, string, CacheKeys<string, string>>
+) {
   let sieve = cacheFactory(7);
   // Prime the cache
   sieve.set("A", "A");
