@@ -1,7 +1,12 @@
 import { deepStrictEqual } from "node:assert";
-import { CacheFactory, CacheKeys } from "../../src/caches.js";
+import {
+  CACHES,
+  CacheFactory,
+  CacheKeys,
+  parseCacheName,
+} from "../../src/caches.js";
 
-export function smokeTest(
+function smokeTest(
   cacheFactory: CacheFactory<string, string, CacheKeys<string, string>>
 ) {
   let sieve = cacheFactory(7);
@@ -59,3 +64,5 @@ export function smokeTest(
   sieve.set("c", "c");
   deepStrictEqual(new Set(sieve.keys()), new Set(["b", "c"]));
 }
+
+smokeTest(CACHES[parseCacheName()]);

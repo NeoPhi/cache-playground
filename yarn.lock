@@ -117,6 +117,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.19.12.tgz#c57c8afbb4054a3ab8317591a0b7320360b444ae"
   integrity sha512-T1QyPSDCyMXaO3pzBkF96E8xMkiRYbUEZADd29SyPGabqxMViNoii+NcK7eWJAEoU6RZyEm5lVSIjTmcdoB9HA==
 
+"@js-sdsl/link-list@^4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@js-sdsl/link-list/-/link-list-4.4.2.tgz#3262178d274f539f4ff74d09f0cb67f691186b23"
+  integrity sha512-tL/9WWyOQUBxwZv2Qn2os/CFrue03FwtSZ1S1kq63jJG+JNC3I3jQNYyH8R0asUYqYiChcxjWCpWmISSeYennQ==
+
 "@synap/sig-fig-calculator@^3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@synap/sig-fig-calculator/-/sig-fig-calculator-3.2.3.tgz#727849225c5303b2f60087affa6db4f210ccf5db"
@@ -179,6 +184,13 @@ get-tsconfig@^4.7.2:
   integrity sha512-wuMsz4leaj5hbGgg4IvDU0bqJagpftG5l5cXIAvo8uZrqn0NJqwtfupTN00VnkQJPcIRrxYrm1Ue24btpCha2A==
   dependencies:
     resolve-pkg-maps "^1.0.0"
+
+js-sieve@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/js-sieve/-/js-sieve-0.0.4.tgz#469a817cf53cb08055e3e1740fd7f7a88c90f4bf"
+  integrity sha512-InmW7Yu1ISxt3NkmKdpvhTAdZQGAuhEiHacgyQfWMmmd+jVVsPcvhKZAzbzhSH/jHZVcIuL79UyxFzh+DkcX1A==
+  dependencies:
+    "@js-sdsl/link-list" "^4.4.2"
 
 lru-cache@^10.2.0:
   version "10.2.0"

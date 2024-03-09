@@ -149,6 +149,10 @@ Using 10,000 for CACHE_SIZE
 
 The playground directory is for quickly trying out ideas or implementations. A few of my experiments can be found there for consideration.
 
+## Related Work
+
+https://github.com/dominictarr/bench-lru
+
 ## Contributing
 
 Everyone interacting with this project is expected to follow the [code of conduct](CODE_OF_CONDUCT.md).

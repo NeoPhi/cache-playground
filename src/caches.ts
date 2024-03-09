@@ -6,6 +6,8 @@ import { Sieve as SieveMapEntry } from "../playground/sieve-map-entry.js";
 import { Sieve as SieveUint } from "../playground/sieve-uint.js";
 import { parseIntFromEnv } from "./utilities.js";
 import { lru } from "tiny-lru";
+import { Sieve } from "../playground/js-sieve.js";
+
 // quick-lru removed since it does not correctly enforce maxSize
 // https://github.com/sindresorhus/quick-lru/issues/17
 // import QuickLRU from "quick-lru";
@@ -20,7 +22,7 @@ export interface Cache<K = Key, V = Value> {
 }
 
 export interface CacheKeys<K = Key, V = Value> extends Cache<K, V> {
-  keys(): IterableIterator<K>;
+  keys(): IterableIterator<K> | K[];
 }
 
 export type CacheFactory<K, V, C extends Cache<K, V>> = (maxSize: number) => C;
@@ -42,6 +44,7 @@ export const CACHES = {
   "playground/lru-mid": (n: number) => new LRUMid<Key, Value>(n),
 
   // SIEVE
+  "js-sieve": (n: number) => new Sieve<Key, Value>(n),
   "playground/sieve-uint": (n: number) => new SieveUint<Key, Value>(n),
   "playground/sieve-map-entry": (n: number) => new SieveMapEntry<Key, Value>(n),
 };
