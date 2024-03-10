@@ -6,7 +6,7 @@ export MEM_OUTPUT=json
 run_workload () {
   export CACHE_NAME=$1
   echo "$CACHE_NAME $CACHE_SIZE"
-  node $CODE_DIR/dist/src/memory.js >> $CODE_DIR/memory.ldjson
+  node --expose-gc $CODE_DIR/dist/src/memory.js >> $CODE_DIR/memory.ldjson
 }
 
 run_caches () {
