@@ -53,6 +53,11 @@ export const CACHES = {
 
 export type CacheName = keyof typeof CACHES;
 
+export const OBJECT_BASED_CACHE: Set<CacheName> = new Set([
+  "tiny-lru",
+  "mnemonist/lru-cache-with-delete",
+]);
+
 export function parseCacheName(): CacheName {
   const cacheName = process.env["CACHE_NAME"];
   if (!cacheName || !Object.hasOwn(CACHES, cacheName)) {

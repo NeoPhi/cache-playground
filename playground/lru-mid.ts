@@ -1,4 +1,7 @@
-// VERY INEFFICIENT ALGORITHM
+// VERY INEFFICIENT IMPLEMENTATION DO NOT USE
+//
+// Purpose was to explore hit ratio of algorithm
+//
 // Implements approach outlined in
 // https://medium.com/@arpitbhayani/what-makes-mysql-lru-cache-scan-resistant-a73364f286d7
 export class LRUMid<K, V> {
