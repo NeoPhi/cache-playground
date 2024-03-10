@@ -11,6 +11,7 @@ run_workload () {
 
 run_caches () {
   run_workload map
+  run_workload object
   run_workload js-sieve
   run_workload tiny-lru
   run_workload lru-cache
