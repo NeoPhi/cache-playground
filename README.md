@@ -11,15 +11,6 @@ yarn install
 yarn dist
 ```
 
-## TODO
-
-This project is still being actively worked on. Two other major components are still in the works.
-
-- [x] Flesh out tooling for hit ratio
-- [ ] Flesh out tooling for operations/second
-- [ ] Flesh out tooling for implementation memory overhead
-- [ ] Improve citations
-
 ## Key Considerations
 
 Picking an in-memory cache implementation is highly dependent on the workload that will be used against it and the required features.
@@ -54,11 +45,11 @@ Caches are evaluated with the following caveats:
 
 For a given workload and a cache of a certain size we can measure the hit ratio of the cache. That is how often when we get a value from the cache it is already there. This is a deterministic measurement so we have high confidence when comparing different algorithms, provided no randomness is involved in the caching algorithm. If randomness is involved, pseudorandom number generators with seed support or used to ensure repeatability and many iterations should be examined.
 
-### Operations/Second (Medium Confidence)
+### Mean Operation Time (Medium Confidence)
 
-For a given implementation of an algorithm how quickly does it perform a given workload as measured in operations per second. Macrobenchmarks are used to ensure any runtime optimizations and garbage collection overhead are factored in. While microbenchmarks play a role, their variability, especially in modern JIT is not the intent of this project.
+For a given implementation of an algorithm how quickly does it perform a given workload as measured in mean time per operation. Macrobenchmarks are used to ensure any runtime optimizations and garbage collection overhead are factored in. While microbenchmarks play a role, their variability, especially in modern JIT is not the intent of this project.
 
-### Implementation Memory Overhead (Low Confidence)
+### Memory Overhead (Low Confidence)
 
 Accurately measuring the memory of a JavaScript object is tricky since so much is handled by the runtime. The goal is to compare the minimal space needed against an implementation to estimate the memory overhead.
 
@@ -78,22 +69,24 @@ These are primarily based on a [power law approximation](papers/0706.1062v2.pdf)
 
 `node dist/src/power-law.js`
 
-| ENV | Default | Meaning |
-| X_MIN | 5 | Minimum integer value |
-| ALPHA | 2.5 | [Power law exponent](papers/0706.1062v2.pdf) |
-| SEED | 9,954 | mersenne-twister random seed |
-| ITERATIONS | 10,000 | How many values to produce |
+| ENV        | Default | Meaning                                      |
+| ---------- | ------- | -------------------------------------------- |
+| X_MIN      | 5       | Minimum integer value                        |
+| ALPHA      | 2.5     | [Power law exponent](papers/0706.1062v2.pdf) |
+| SEED       | 9,954   | mersenne-twister random seed                 |
+| ITERATIONS | 10,000  | How many values to produce                   |
 
 #### Zipf's Law
 
 `node dist/src/zipf.js`
 
-| ENV | Default | Meaning |
-| X_MIN | 1 | Minimum integer value |
-| X_MAX | 1,000 | Maximum integer value |
-| SKEW | 1.07 | [Skew towards X_MIN](https://github.com/vweevers/zipfian-integer?tab=readme-ov-file#about) |
-| SEED | 9,954 | mersenne-twister random seed |
-| ITERATIONS | 10,000 | How many values to produce |
+| ENV        | Default | Meaning                                                                                    |
+| ---------- | ------- | ------------------------------------------------------------------------------------------ |
+| X_MIN      | 1       | Minimum integer value                                                                      |
+| X_MAX      | 1,000   | Maximum integer value                                                                      |
+| SKEW       | 1.07    | [Skew towards X_MIN](https://github.com/vweevers/zipfian-integer?tab=readme-ov-file#about) |
+| SEED       | 9,954   | mersenne-twister random seed                                                               |
+| ITERATIONS | 10,000  | How many values to produce                                                                 |
 
 ## Running
 
@@ -103,9 +96,10 @@ To provide as much flexibility in workload generation the tools read a series of
 
 `node dist/src/hit-ratio.js`
 
-| ENV | Default | Meaning |
-| CACHE_NAMES | | Caches to include in the run |
-| CACHE_SIZE | 100 | Limit on number keys in the cache |
+| ENV         | Default | Meaning                           |
+| ----------- | ------- | --------------------------------- |
+| CACHE_NAMES |         | Caches to include in the run      |
+| CACHE_SIZE  | 100     | Limit on number keys in the cache |
 
 Sample simulated workload:
 
@@ -119,31 +113,94 @@ Using 100 for CACHE_SIZE
 ┌───────────────────────────────┬──────────┬──────────┐
 │ (index)                       │ hitCount │ hitRatio │
 ├───────────────────────────────┼──────────┼──────────┤
-│ lru-cache                     │ 9779     │ '97.79%' │
 │ playground/lru-uint           │ 9779     │ '97.79%' │
-│ mnemonist/lru-map-with-delete │ 9779     │ '97.79%' │
-│ playground/lru-mid            │ 9782     │ '97.82%' │
 │ playground/sieve-uint         │ 9789     │ '97.89%' │
-│ playground/sieve-map-entry    │ 9789     │ '97.89%' │
 └───────────────────────────────┴──────────┴──────────┘
 ```
 
 Sample captured workload:
 
 ```
-zstd -cd ~/Downloads/metaKV.sample100.txt.zst | env CACHE_SIZE=10000 node dist/src/hit-ratio.js
+zstd -cd datasets/twemcacheWorkload/txt/metaKV.sample100.txt.zst | env CACHE_SIZE=100000 CACHE_NAME=node dist/src/ops.js
 Using 10,000 for CACHE_SIZE
 ┌───────────────────────────────┬──────────┬──────────────┐
 │ (index)                       │ hitCount │ hitRatio     │
 ├───────────────────────────────┼──────────┼──────────────┤
-│ lru-cache                     │ 11583908 │ '88.264446%' │
 │ playground/lru-uint           │ 11583908 │ '88.264446%' │
-│ mnemonist/lru-map-with-delete │ 11583908 │ '88.264446%' │
-│ playground/lru-mid            │ 11658520 │ '88.832958%' │
 │ playground/sieve-uint         │ 11679236 │ '88.990805%' │
-│ playground/sieve-map-entry    │ 11679236 │ '88.990805%' │
 └───────────────────────────────┴──────────┴──────────────┘
 ```
+
+### Mean Operation Time
+
+All times are reported in nanoseconds.
+
+`node dist/src/ops.js`
+
+| ENV          | Default       | Meaning                                   |
+| ------------ | ------------- | ----------------------------------------- |
+| CACHE_NAME   |               | Cache to use                              |
+| CACHE_SIZE   | 100           | Limit on number keys in the cache         |
+| OPS_OUTPUT   | table         | `json` for JSON, default is console table |
+| OPS_WORKLOAD | not specified | workload name to include in JSON output   |
+
+```
+zstd -cd datasets/twemcacheWorkload/txt/metaKV.sample100.txt.zst | env CACHE_SIZE=100000 CACHE_NAME=playground/sieve-uint node dist/src/ops.js
+Using playground/sieve-uint for CACHE_NAME
+Using 100,000 for CACHE_SIZE
+┌─────────┬──────────────┬───────┐
+│ (index) │ count        │ mean  │
+├─────────┼──────────────┼───────┤
+│ get     │ '13,124,093' │ '215' │
+│ set     │ '696,637'    │ '458' │
+└─────────┴──────────────┴───────┘
+```
+
+### Memory Overhead
+
+The `process.memoryUsage().heapUsed` in bytes is reported. For calculation of overhead compare against a plain `map` or `object` based on the underlying implementation. The optional `--expose-gc` to node must be passed. The overhead is HIGHLY dependent on the size and type of the keys so customize for your use case.
+
+`node --expose-gc dist/src/memory.js`
+
+| ENV        | Default | Meaning                                 |
+| ---------- | ------- | --------------------------------------- |
+| CACHE_NAME |         | Cache to use                            |
+| CACHE_SIZE | 100     | Limit on number keys in the cache       |
+| MEM_OUTPUT | log     | `json` for JSON, default is console log |
+
+```
+env CACHE_SIZE=100000 CACHE_NAME=playground/sieve-uint node --expose-gc dist/src/memory.js
+Using playground/sieve-uint for CACHE_NAME
+Using 100,000 for CACHE_SIZE
+15,969,936
+
+env CACHE_SIZE=100000 CACHE_NAME=map node --expose-gc dist/src/memory.js
+Using map for CACHE_NAME
+Using 100,000 for CACHE_SIZE
+10,660,632
+```
+
+So in the case of the `playground/sieve-uint` cache the overhead for a `100,000` item string cache is apx. `5,309,304 bytes`.
+
+## Results
+
+All results reported below were captured on a DigitalOcean CPU-Optimized 2 vCPUs machine running Debian 12 and node v20.11.1. Full details in [benchmark.md](benchmark.md).
+
+### Implementations
+
+Any mistakes in classification are mine and corrections are welcome.
+
+| Name                                                                          | Version | Type  | Core HashMap | Notes                         |
+| ----------------------------------------------------------------------------- | ------- | ----- | ------------ | ----------------------------- |
+| [tiny-lru](https://github.com/avoidwork/tiny-lru)                             | 11.2.5  | LRU   | Object       |                               |
+| [lru-cache](https://github.com/isaacs/node-lru-cache)                         | 10.2.0  | LRU   | Map          |                               |
+| [playground/lru-uint](playground/lru-uint.ts)                                 | N/A     | LRU   | Map          |                               |
+| [mnemonist/lru-cache-with-delete](https://github.com/yomguithereal/mnemonist) | 0.39.8  | LRU   | Object       |                               |
+| [mnemonist/lru-map-with-delete](https://github.com/yomguithereal/mnemonist)   | 0.39.8  | LRU   | Map          |                               |
+| [js-sieve](playground/js-sieve.ts)                                            | 0.0.4\* | SIEVE | Map          | Modified interface            |
+| [playground/sieve-uint](playground/sieve-uint.ts)                             | N/A     | SIEVE | Map          |                               |
+| [playground/sieve-map-entry](playground/sieve-map-entry.ts)                   | N/A     | SIEVE | Map          |                               |
+| [zf/sieve](playground/zf-sieve-cache.ts)                                      | 1.0.?\* | SIEVE | Map          | Copied and modified interface |
 
 ## Playground
 
