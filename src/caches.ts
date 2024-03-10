@@ -7,6 +7,7 @@ import { Sieve as SieveUint } from "../playground/sieve-uint.js";
 import { parseIntFromEnv } from "./utilities.js";
 import { lru } from "tiny-lru";
 import { Sieve } from "../playground/js-sieve.js";
+import { ObjectAdapter } from "../playground/object-adapter.js";
 
 // quick-lru removed since it does not correctly enforce maxSize
 // https://github.com/sindresorhus/quick-lru/issues/17
@@ -30,6 +31,7 @@ export type CacheFactory<K, V, C extends Cache<K, V>> = (maxSize: number) => C;
 export const CACHES = {
   // Unlimited
   map: () => new Map(),
+  object: () => new ObjectAdapter<Key, Value>(),
 
   // LRU
   "tiny-lru": (n: number) => lru<Value>(n),

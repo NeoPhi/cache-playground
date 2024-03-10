@@ -1,10 +1,11 @@
 import { readFileSync } from "fs";
 
-const runs = readFileSync("./runs.log").toString().split("\n");
+const lines = readFileSync("./ops.ldjson").toString().split("\n");
 console.log(
   [
     "workload",
     "cacheSize",
+    "scenario",
     "cacheName",
     "hitRatio",
     "getCount",
@@ -16,15 +17,15 @@ console.log(
   ].join(",")
 );
 const results: any = {};
-runs.forEach((run) => {
-  if (run) {
+lines.forEach((line) => {
+  if (line) {
     const {
       workload,
       cacheName,
       cacheSize,
       get: { count: getCount, mean: getMean },
       set: { count: setCount, mean: setMean },
-    } = JSON.parse(run);
+    } = JSON.parse(line);
     if (!results[workload]) {
       results[workload] = {};
     }
@@ -57,6 +58,7 @@ Object.entries(results).forEach(([workload, cacheSizes]) => {
       group.push([
         workload,
         cacheSize,
+        `${workload} ${cacheSize}`,
         cacheName,
         (((getCount - setCount) * 100) / getCount).toFixed(2),
         getCount,

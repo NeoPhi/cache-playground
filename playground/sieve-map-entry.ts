@@ -12,17 +12,15 @@ class Entry<V> {
 export class Sieve<K, V> {
   readonly #maxSize: number;
 
-  readonly #map: Map<K, Entry<V>>;
+  readonly #map: Map<K, Entry<V>> = new Map();
 
-  #iterator: IterableIterator<[K, Entry<V>]>;
+  #iterator!: IterableIterator<[K, Entry<V>]>;
 
-  #result: IteratorResult<[K, Entry<V>]>;
+  #result!: IteratorResult<[K, Entry<V>]>;
 
   constructor(maxSize: number) {
     this.#maxSize = maxSize;
-    this.#map = new Map();
-    this.#iterator = this.#map.entries();
-    this.#result = this.#iterator.next();
+    this.clear();
   }
 
   set(key: K, value: V) {

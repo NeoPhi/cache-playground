@@ -1,29 +1,40 @@
 // Builds on concepts outlined in https://yomguithereal.github.io/posts/lru-cache
 export class Sieve<K, V> {
   #maxSize;
-  #size = 0;
-  #headIndex = 0;
-  #tailIndex = 0;
-  #freeHeadIndex = 0;
-  #freeTailIndex = 0;
-  #freeIndex = 1;
-  #nextIndexes: Uint32Array;
-  #previousIndexes: Uint32Array;
-  #keys: K[];
-  #values: V[];
-  #visited: Uint8Array;
-  #map: Map<K, number>;
-  #pointer = 0;
+  #size!: number;
+  #headIndex!: number;
+  #tailIndex!: number;
+  #freeHeadIndex!: number;
+  #freeTailIndex!: number;
+  #freeIndex!: number;
+  #nextIndexes!: Uint32Array;
+  #previousIndexes!: Uint32Array;
+  #keys!: K[];
+  #values!: V[];
+  #visited!: Uint8Array;
+  #map: Map<K, number> = new Map();
+  #pointer!: number;
 
   constructor(size: number) {
     this.#maxSize = size;
+    this.clear();
+  }
+
+  clear() {
+    this.#size = 0;
+    this.#headIndex = 0;
+    this.#tailIndex = 0;
+    this.#freeHeadIndex = 0;
+    this.#freeTailIndex = 0;
+    this.#freeIndex = 1;
     // TODO: Dynamically determine based on size
-    this.#nextIndexes = new Uint32Array(size + 1);
-    this.#previousIndexes = new Uint32Array(size + 1);
-    this.#visited = new Uint8Array(size + 1);
-    this.#keys = new Array(size + 1);
-    this.#values = new Array(size + 1);
-    this.#map = new Map();
+    this.#nextIndexes = new Uint32Array(this.#maxSize + 1);
+    this.#previousIndexes = new Uint32Array(this.#maxSize + 1);
+    this.#visited = new Uint8Array(this.#maxSize + 1);
+    this.#keys = new Array(this.#maxSize + 1);
+    this.#values = new Array(this.#maxSize + 1);
+    this.#map.clear();
+    this.#pointer = 0;
   }
 
   get(key: K): V | undefined {
