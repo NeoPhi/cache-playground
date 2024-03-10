@@ -6,9 +6,7 @@ interface Node<T, U> {
   next?: Node<T, U>;
 }
 
-// Modified from https://github.com/zweifisch/sieve/blob/main/mod.ts
-// since the 1.0.0 version on npm has a different interface
-// added keys
+// Modified from https://github.com/zweifisch/sieve/blob/ed6f771aba68aa53b63adc30cd5812bdae2563c8/mod.ts
 export class SieveCache<T, U = string> {
   capacity: number;
   cache: Map<U, Node<T, U>> = new Map();

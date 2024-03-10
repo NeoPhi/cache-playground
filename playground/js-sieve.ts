@@ -8,8 +8,7 @@ export class Entry<K, V> {
   ) {}
 }
 
-// Modified version of https://github.com/kurtextrem/js-sieve/blob/main/sieve.mts
-// to adapt the interface
+// Modified from https://github.com/kurtextrem/js-sieve/blob/f5d903f8b3b536af84b1e705c94bdded121b883a/sieve.mts
 export class Sieve<K, V> {
   private size: number;
   private items: Map<K, Entry<K, V>>;

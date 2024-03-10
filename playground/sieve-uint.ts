@@ -1,23 +1,29 @@
 // Builds on concepts outlined in https://yomguithereal.github.io/posts/lru-cache
 export class Sieve<K, V> {
   #maxSize;
-  #size!: number;
-  #headIndex!: number;
-  #tailIndex!: number;
-  #freeHeadIndex!: number;
-  #freeTailIndex!: number;
-  #freeIndex!: number;
-  #nextIndexes!: Uint32Array;
-  #previousIndexes!: Uint32Array;
-  #keys!: K[];
-  #values!: V[];
-  #visited!: Uint8Array;
-  #map: Map<K, number> = new Map();
-  #pointer!: number;
+  #size = 0;
+  #headIndex = 0;
+  #tailIndex = 0;
+  #freeHeadIndex = 0;
+  #freeTailIndex = 0;
+  #freeIndex = 1;
+  #nextIndexes: Uint32Array;
+  #previousIndexes: Uint32Array;
+  #keys: K[];
+  #values: V[];
+  #visited: Uint8Array;
+  #map: Map<K, number>;
+  #hand = 0;
 
   constructor(size: number) {
     this.#maxSize = size;
-    this.clear();
+    // TODO: Dynamically determine based on size
+    this.#nextIndexes = new Uint32Array(size + 1);
+    this.#previousIndexes = new Uint32Array(size + 1);
+    this.#visited = new Uint8Array(size + 1);
+    this.#keys = new Array(size + 1);
+    this.#values = new Array(size + 1);
+    this.#map = new Map();
   }
 
   clear() {
@@ -27,14 +33,13 @@ export class Sieve<K, V> {
     this.#freeHeadIndex = 0;
     this.#freeTailIndex = 0;
     this.#freeIndex = 1;
-    // TODO: Dynamically determine based on size
     this.#nextIndexes = new Uint32Array(this.#maxSize + 1);
     this.#previousIndexes = new Uint32Array(this.#maxSize + 1);
     this.#visited = new Uint8Array(this.#maxSize + 1);
     this.#keys = new Array(this.#maxSize + 1);
     this.#values = new Array(this.#maxSize + 1);
-    this.#map.clear();
-    this.#pointer = 0;
+    this.#map = new Map();
+    this.#hand = 0;
   }
 
   get(key: K): V | undefined {
@@ -50,7 +55,7 @@ export class Sieve<K, V> {
     let index = this.#map.get(key);
     if (index !== undefined) {
       this.#values[index] = value;
-      this.#visited[index] = 0;
+      // DR: leave the #visited state as-is
       return;
     }
     if (this.#size === this.#maxSize) {
@@ -75,17 +80,17 @@ export class Sieve<K, V> {
   }
 
   #evict() {
-    if (this.#pointer === 0) {
-      this.#pointer = this.#tailIndex;
+    if (this.#hand === 0) {
+      this.#hand = this.#tailIndex;
     }
-    while (this.#visited[this.#pointer] === 1) {
-      this.#visited[this.#pointer] = 0;
-      this.#pointer = this.#nextIndexes[this.#pointer];
-      if (this.#pointer === 0) {
-        this.#pointer = this.#tailIndex;
+    while (this.#visited[this.#hand] === 1) {
+      this.#visited[this.#hand] = 0;
+      this.#hand = this.#nextIndexes[this.#hand];
+      if (this.#hand === 0) {
+        this.#hand = this.#tailIndex;
       }
     }
-    this.#removeNode(this.#pointer);
+    this.#removeNode(this.#hand);
   }
 
   #getHeadIndex(): number {
@@ -117,14 +122,13 @@ export class Sieve<K, V> {
     } else if (nodeNextIndex !== 0) {
       this.#previousIndexes[nodeNextIndex] = nodePreviousIndex;
     }
-    if (this.#pointer === nodeIndex) {
-      this.#pointer = nodeNextIndex;
+    if (this.#hand === nodeIndex) {
+      this.#hand = nodeNextIndex;
     }
     this.#nextIndexes[nodeIndex] = 0;
     this.#previousIndexes[nodeIndex] = 0;
     (this.#values as any)[nodeIndex] = undefined;
     const key = this.#keys[nodeIndex];
-    // console.log(`EVICT ${key}`);
     this.#map.delete(key);
     this.#size -= 1;
     this.#addToFree(nodeIndex);
