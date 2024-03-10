@@ -8,6 +8,7 @@ import { parseIntFromEnv } from "./utilities.js";
 import { lru } from "tiny-lru";
 import { Sieve } from "../playground/js-sieve.js";
 import { ObjectAdapter } from "../playground/object-adapter.js";
+import { SieveCache } from "../playground/zf-sieve-cache.js";
 
 // quick-lru removed since it does not correctly enforce maxSize
 // https://github.com/sindresorhus/quick-lru/issues/17
@@ -49,6 +50,7 @@ export const CACHES = {
   "js-sieve": (n: number) => new Sieve<Key, Value>(n),
   "playground/sieve-uint": (n: number) => new SieveUint<Key, Value>(n),
   "playground/sieve-map-entry": (n: number) => new SieveMapEntry<Key, Value>(n),
+  "zf/sieve": (n: number) => new SieveCache<Value, Key>(n),
 };
 
 export type CacheName = keyof typeof CACHES;

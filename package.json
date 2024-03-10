@@ -13,6 +13,7 @@
     "@tsconfig/node20": "^20.1.2",
     "@types/mersenne-twister": "^1.1.7",
     "@types/node": "^20.11.20",
+    "@zf/sieve": "^1.0.0",
     "js-sieve": "^0.0.4",
     "lru-cache": "^10.2.0",
     "mersenne-twister": "^1.1.0",
