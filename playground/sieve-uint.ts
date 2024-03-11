@@ -1,3 +1,5 @@
+import { getTypedArray } from "./typed-array-factory.js";
+
 // Builds on concepts outlined in https://yomguithereal.github.io/posts/lru-cache
 export class Sieve<K, V> {
   #maxSize;
@@ -7,8 +9,8 @@ export class Sieve<K, V> {
   #freeHeadIndex = 0;
   #freeTailIndex = 0;
   #freeIndex = 1;
-  #nextIndexes: Uint32Array;
-  #previousIndexes: Uint32Array;
+  #nextIndexes: Uint8Array | Uint16Array | Uint32Array;
+  #previousIndexes: Uint8Array | Uint16Array | Uint32Array;
   #keys: K[];
   #values: V[];
   #visited: Uint8Array;
@@ -17,9 +19,8 @@ export class Sieve<K, V> {
 
   constructor(size: number) {
     this.#maxSize = size;
-    // TODO: Dynamically determine based on size
-    this.#nextIndexes = new Uint32Array(size + 1);
-    this.#previousIndexes = new Uint32Array(size + 1);
+    this.#nextIndexes = getTypedArray(size + 1);
+    this.#previousIndexes = getTypedArray(size + 1);
     this.#visited = new Uint8Array(size + 1);
     this.#keys = new Array(size + 1);
     this.#values = new Array(size + 1);
