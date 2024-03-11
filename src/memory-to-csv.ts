@@ -4,31 +4,21 @@ import { CacheName, OBJECT_BASED_CACHE } from "./caches.js";
 type Row = {
   heapUsedMean: number;
   usesObject: boolean;
-  heapOverhead?: number;
-  cacheSizeRank?: number;
 };
 type Rows = { [key: string]: Row };
 type Data = { resultCount: number; heapUsedTotal: number };
 type Result = { [key: string]: Data };
 type Results = { [key: number]: Result };
 
-function rank(rows: Rows, keys: string[]) {
-  keys
-    .sort((a, b) => rows[a].heapOverhead! - rows[b].heapOverhead!)
-    .forEach((cacheName, index) => {
-      rows[cacheName].cacheSizeRank = index + 1;
-    });
-}
-
 const lines = readFileSync("./memory.ldjson").toString().split("\n");
 console.log(
   [
     "cacheSize",
     "cacheName",
+    "hashType",
     "heapUsedMean",
     "heapOverhead",
-    "hashType",
-    "cacheSizeHashTypeRank",
+    "heapOverheadPercentage",
   ].join(",")
 );
 const results: Results = {};
@@ -68,26 +58,21 @@ Object.entries(results).forEach(([cacheSizeString, cacheNames]) => {
       };
     }
   });
-  const objectKeys: string[] = [];
-  const mapKeys: string[] = [];
-  Object.entries(rows).forEach(([cacheName, row]) => {
-    row.heapOverhead =
-      row.heapUsedMean - (row.usesObject ? objectMean : mapMean);
-    if (row.usesObject) {
-      objectKeys.push(cacheName);
-    } else {
-      mapKeys.push(cacheName);
-    }
-  });
-  rank(rows, objectKeys);
-  rank(rows, mapKeys);
   const outputOrder = Object.keys(rows).sort();
   outputOrder.forEach((cacheName) => {
-    const { heapUsedMean, heapOverhead, cacheSizeRank } = rows[cacheName];
+    const { heapUsedMean, usesObject } = rows[cacheName];
+    const baseline = usesObject ? objectMean : mapMean;
+    const heapOverhead = heapUsedMean - baseline;
+    const overheadPercent = ((heapUsedMean * 100) / baseline).toFixed(2);
     console.log(
-      [cacheSize, cacheName, heapUsedMean, heapOverhead, cacheSizeRank].join(
-        ","
-      )
+      [
+        cacheSize,
+        cacheName,
+        usesObject ? "Object" : "Map",
+        heapUsedMean,
+        heapOverhead,
+        overheadPercent,
+      ].join(",")
     );
   });
 });
