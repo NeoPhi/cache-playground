@@ -11,16 +11,29 @@ type Result = { [key: string]: Data };
 type Results = { [key: number]: Result };
 
 const lines = readFileSync("./memory.ldjson").toString().split("\n");
-console.log(
-  [
-    "cacheSize",
-    "cacheName",
-    "hashType",
-    "heapUsedMean",
-    "heapOverhead",
-    "heapOverheadPercentage",
-  ].join(",")
-);
+const align = {
+  cacheSize: "---:",
+  cacheName: ":---:",
+  hashType: ":---:",
+  heapUsedMean: "---:",
+  heapOverhead: "---:",
+  heapOverheadPercentage: "---:",
+};
+
+const columns = [
+  "cacheSize",
+  "cacheName",
+  "hashType",
+  "heapUsedMean",
+  "heapOverhead",
+  "heapOverheadPercentage",
+];
+if (process.env.MEM_OUTPUT === "md") {
+  console.log(`|${columns.join("|")}|`);
+  console.log(`|${columns.map((name) => (align as any)[name]).join("|")}|`);
+} else {
+  console.log(columns.join(","));
+}
 const results: Results = {};
 lines.forEach((line) => {
   if (line) {
@@ -39,7 +52,7 @@ lines.forEach((line) => {
     data.heapUsedTotal += heapUsed;
   }
 });
-Object.entries(results).forEach(([cacheSizeString, cacheNames]) => {
+Object.entries(results).forEach(([cacheSizeString, cacheNames], index) => {
   const cacheSize = parseInt(cacheSizeString, 10);
   const rows: Rows = {};
   let mapMean = 0;
@@ -58,21 +71,29 @@ Object.entries(results).forEach(([cacheSizeString, cacheNames]) => {
       };
     }
   });
+  if (index >= 1 && process.env.MEM_OUTPUT === "md") {
+    console.log(`|${columns.map(() => " ").join("|")}|`);
+  }
   const outputOrder = Object.keys(rows).sort();
   outputOrder.forEach((cacheName) => {
     const { heapUsedMean, usesObject } = rows[cacheName];
     const baseline = usesObject ? objectMean : mapMean;
     const heapOverhead = heapUsedMean - baseline;
     const overheadPercent = ((heapUsedMean * 100) / baseline).toFixed(2);
-    console.log(
-      [
-        cacheSize,
-        cacheName,
-        usesObject ? "Object" : "Map",
-        heapUsedMean,
-        heapOverhead,
-        overheadPercent,
-      ].join(",")
-    );
+    const format =
+      process.env.MEM_OUTPUT === "md" ? "toLocaleString" : "toString";
+    const data = [
+      cacheSize[format](),
+      cacheName,
+      usesObject ? "Object" : "Map",
+      heapUsedMean[format](),
+      heapOverhead[format](),
+      overheadPercent,
+    ];
+    if (process.env.MEM_OUTPUT === "md") {
+      console.log(`|${data.join("|")}|`);
+    } else {
+      console.log(data.join(","));
+    }
   });
 });
