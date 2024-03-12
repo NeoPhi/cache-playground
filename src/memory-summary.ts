@@ -28,6 +28,7 @@ const columns = [
   "heapOverhead",
   "heapOverheadPercentage",
 ];
+
 if (process.env.MEM_OUTPUT === "md") {
   console.log(`|${columns.join("|")}|`);
   console.log(`|${columns.map((name) => (align as any)[name]).join("|")}|`);
@@ -72,7 +73,7 @@ Object.entries(results).forEach(([cacheSizeString, cacheNames], index) => {
     }
   });
   if (index >= 1 && process.env.MEM_OUTPUT === "md") {
-    console.log(`|${columns.map(() => " ").join("|")}|`);
+    console.log(`|**${columns.join("**|**")}**|`);
   }
   const outputOrder = Object.keys(rows).sort();
   outputOrder.forEach((cacheName) => {

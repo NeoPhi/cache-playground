@@ -206,47 +206,47 @@ Any mistakes in classification are mine and corrections are welcome.
 
 Presented in alphabetical order. `heapUsedMean` and `heapOverhead` are in bytes.
 
-| cacheSize |            cacheName            | hashType | heapUsedMean | heapOverhead | heapOverheadPercentage |
-| --------: | :-----------------------------: | :------: | -----------: | -----------: | ---------------------: |
-|     1,000 |            js-sieve             |   Map    |    4,769,327 |      134,770 |                 102.91 |
-|     1,000 |            lru-cache            |   Map    |    4,708,356 |       73,799 |                 101.59 |
-|     1,000 | mnemonist/lru-cache-with-delete |  Object  |    4,704,979 |       49,185 |                 101.06 |
-|     1,000 |  mnemonist/lru-map-with-delete  |   Map    |    4,681,853 |       47,296 |                 101.02 |
-|     1,000 |       playground/lru-uint       |   Map    |    4,715,087 |       80,530 |                 101.74 |
-|     1,000 |   playground/sieve-map-entry    |   Map    |    4,707,678 |       73,121 |                 101.58 |
-|     1,000 |      playground/sieve-uint      |   Map    |    4,716,690 |       82,133 |                 101.77 |
-|     1,000 |            tiny-lru             |  Object  |    4,718,836 |       63,042 |                 101.35 |
-|     1,000 |            zf/sieve             |   Map    |    4,856,458 |      221,901 |                 104.79 |
-|           |                                 |          |              |              |                        |
-|    10,000 |            js-sieve             |   Map    |    6,847,922 |    1,419,470 |                 126.15 |
-|    10,000 |            lru-cache            |   Map    |    6,009,776 |      581,324 |                 110.71 |
-|    10,000 | mnemonist/lru-cache-with-delete |  Object  |    5,288,583 |       90,260 |                 101.74 |
-|    10,000 |  mnemonist/lru-map-with-delete  |   Map    |    5,954,027 |      525,575 |                 109.68 |
-|    10,000 |       playground/lru-uint       |   Map    |    5,974,804 |      546,352 |                 110.06 |
-|    10,000 |   playground/sieve-map-entry    |   Map    |    6,297,472 |      869,020 |                 116.01 |
-|    10,000 |      playground/sieve-uint      |   Map    |    6,046,410 |      617,958 |                 111.38 |
-|    10,000 |            tiny-lru             |  Object  |    5,849,111 |      650,788 |                 112.52 |
-|    10,000 |            zf/sieve             |   Map    |    6,787,847 |    1,359,395 |                 125.04 |
-|           |                                 |          |              |              |                        |
-|   100,000 |            js-sieve             |   Map    |   24,006,937 |   13,351,503 |                 225.30 |
-|   100,000 |            lru-cache            |   Map    |   16,080,652 |    5,425,218 |                 150.92 |
-|   100,000 | mnemonist/lru-cache-with-delete |  Object  |   11,262,494 |    1,609,447 |                 116.67 |
-|   100,000 |  mnemonist/lru-map-with-delete  |   Map    |   15,945,810 |    5,290,376 |                 149.65 |
-|   100,000 |       playground/lru-uint       |   Map    |   16,003,612 |    5,348,178 |                 150.19 |
-|   100,000 |   playground/sieve-map-entry    |   Map    |   18,410,132 |    7,754,698 |                 172.78 |
-|   100,000 |      playground/sieve-uint      |   Map    |   16,007,984 |    5,352,550 |                 150.23 |
-|   100,000 |            tiny-lru             |  Object  |   16,321,853 |    6,668,806 |                 169.08 |
-|   100,000 |            zf/sieve             |   Map    |   23,228,587 |   12,573,153 |                 218.00 |
-|           |                                 |          |              |              |                        |
-| 1,000,000 |            js-sieve             |   Map    |  183,397,438 |  125,376,004 |                 316.09 |
-| 1,000,000 |            lru-cache            |   Map    |  103,364,414 |   45,342,980 |                 178.15 |
-| 1,000,000 | mnemonist/lru-cache-with-delete |  Object  |   70,758,808 |   16,221,431 |                 129.74 |
-| 1,000,000 |  mnemonist/lru-map-with-delete  |   Map    |  103,326,676 |   45,305,242 |                 178.08 |
-| 1,000,000 |       playground/lru-uint       |   Map    |  103,365,364 |   45,343,930 |                 178.15 |
-| 1,000,000 |   playground/sieve-map-entry    |   Map    |  127,416,284 |   69,394,850 |                 219.60 |
-| 1,000,000 |      playground/sieve-uint      |   Map    |  103,376,207 |   45,354,773 |                 178.17 |
-| 1,000,000 |            tiny-lru             |  Object  |  118,609,333 |   64,071,956 |                 217.48 |
-| 1,000,000 |            zf/sieve             |   Map    |  175,430,400 |  117,408,966 |                 302.35 |
+|     cacheSize |            cacheName            |   hashType   |     heapUsedMean |     heapOverhead |     heapOverheadPercentage |
+| ------------: | :-----------------------------: | :----------: | ---------------: | ---------------: | -------------------------: |
+|         1,000 |            js-sieve             |     Map      |        4,769,327 |          134,770 |                     102.91 |
+|         1,000 |            lru-cache            |     Map      |        4,708,356 |           73,799 |                     101.59 |
+|         1,000 | mnemonist/lru-cache-with-delete |    Object    |        4,704,979 |           49,185 |                     101.06 |
+|         1,000 |  mnemonist/lru-map-with-delete  |     Map      |        4,681,853 |           47,296 |                     101.02 |
+|         1,000 |       playground/lru-uint       |     Map      |        4,715,087 |           80,530 |                     101.74 |
+|         1,000 |   playground/sieve-map-entry    |     Map      |        4,707,678 |           73,121 |                     101.58 |
+|         1,000 |      playground/sieve-uint      |     Map      |        4,716,690 |           82,133 |                     101.77 |
+|         1,000 |            tiny-lru             |    Object    |        4,718,836 |           63,042 |                     101.35 |
+|         1,000 |            zf/sieve             |     Map      |        4,856,458 |          221,901 |                     104.79 |
+| **cacheSize** |          **cacheName**          | **hashType** | **heapUsedMean** | **heapOverhead** | **heapOverheadPercentage** |
+|        10,000 |            js-sieve             |     Map      |        6,847,922 |        1,419,470 |                     126.15 |
+|        10,000 |            lru-cache            |     Map      |        6,009,776 |          581,324 |                     110.71 |
+|        10,000 | mnemonist/lru-cache-with-delete |    Object    |        5,288,583 |           90,260 |                     101.74 |
+|        10,000 |  mnemonist/lru-map-with-delete  |     Map      |        5,954,027 |          525,575 |                     109.68 |
+|        10,000 |       playground/lru-uint       |     Map      |        5,974,804 |          546,352 |                     110.06 |
+|        10,000 |   playground/sieve-map-entry    |     Map      |        6,297,472 |          869,020 |                     116.01 |
+|        10,000 |      playground/sieve-uint      |     Map      |        6,046,410 |          617,958 |                     111.38 |
+|        10,000 |            tiny-lru             |    Object    |        5,849,111 |          650,788 |                     112.52 |
+|        10,000 |            zf/sieve             |     Map      |        6,787,847 |        1,359,395 |                     125.04 |
+| **cacheSize** |          **cacheName**          | **hashType** | **heapUsedMean** | **heapOverhead** | **heapOverheadPercentage** |
+|       100,000 |            js-sieve             |     Map      |       24,006,937 |       13,351,503 |                     225.30 |
+|       100,000 |            lru-cache            |     Map      |       16,080,652 |        5,425,218 |                     150.92 |
+|       100,000 | mnemonist/lru-cache-with-delete |    Object    |       11,262,494 |        1,609,447 |                     116.67 |
+|       100,000 |  mnemonist/lru-map-with-delete  |     Map      |       15,945,810 |        5,290,376 |                     149.65 |
+|       100,000 |       playground/lru-uint       |     Map      |       16,003,612 |        5,348,178 |                     150.19 |
+|       100,000 |   playground/sieve-map-entry    |     Map      |       18,410,132 |        7,754,698 |                     172.78 |
+|       100,000 |      playground/sieve-uint      |     Map      |       16,007,984 |        5,352,550 |                     150.23 |
+|       100,000 |            tiny-lru             |    Object    |       16,321,853 |        6,668,806 |                     169.08 |
+|       100,000 |            zf/sieve             |     Map      |       23,228,587 |       12,573,153 |                     218.00 |
+| **cacheSize** |          **cacheName**          | **hashType** | **heapUsedMean** | **heapOverhead** | **heapOverheadPercentage** |
+|     1,000,000 |            js-sieve             |     Map      |      183,397,438 |      125,376,004 |                     316.09 |
+|     1,000,000 |            lru-cache            |     Map      |      103,364,414 |       45,342,980 |                     178.15 |
+|     1,000,000 | mnemonist/lru-cache-with-delete |    Object    |       70,758,808 |       16,221,431 |                     129.74 |
+|     1,000,000 |  mnemonist/lru-map-with-delete  |     Map      |      103,326,676 |       45,305,242 |                     178.08 |
+|     1,000,000 |       playground/lru-uint       |     Map      |      103,365,364 |       45,343,930 |                     178.15 |
+|     1,000,000 |   playground/sieve-map-entry    |     Map      |      127,416,284 |       69,394,850 |                     219.60 |
+|     1,000,000 |      playground/sieve-uint      |     Map      |      103,376,207 |       45,354,773 |                     178.17 |
+|     1,000,000 |            tiny-lru             |    Object    |      118,609,333 |       64,071,956 |                     217.48 |
+|     1,000,000 |            zf/sieve             |     Map      |      175,430,400 |      117,408,966 |                     302.35 |
 
 ## Playground
 
