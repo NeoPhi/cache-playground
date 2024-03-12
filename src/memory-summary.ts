@@ -11,7 +11,7 @@ type Result = { [key: string]: Data };
 type Results = { [key: number]: Result };
 
 const lines = readFileSync("./memory.ldjson").toString().split("\n");
-const align = {
+const columns = {
   cacheSize: "---:",
   cacheName: ":---:",
   hashType: ":---:",
@@ -19,21 +19,12 @@ const align = {
   heapOverhead: "---:",
   heapOverheadPercentage: "---:",
 };
-
-const columns = [
-  "cacheSize",
-  "cacheName",
-  "hashType",
-  "heapUsedMean",
-  "heapOverhead",
-  "heapOverheadPercentage",
-];
-
+const columnNames = Object.keys(columns);
 if (process.env.MEM_OUTPUT === "md") {
-  console.log(`|${columns.join("|")}|`);
-  console.log(`|${columns.map((name) => (align as any)[name]).join("|")}|`);
+  console.log(`|${columnNames.join("|")}|`);
+  console.log(`|${Object.values(columns).join("|")}|`);
 } else {
-  console.log(columns.join(","));
+  console.log(columnNames.join(","));
 }
 const results: Results = {};
 lines.forEach((line) => {
@@ -60,7 +51,7 @@ Object.entries(results).forEach(([cacheSizeString, cacheNames], index) => {
   let objectMean = 0;
   Object.entries(cacheNames).forEach(([cacheName, data]) => {
     const { resultCount, heapUsedTotal } = data;
-    const heapUsedMean = Math.floor(heapUsedTotal / resultCount);
+    const heapUsedMean = Math.ceil(heapUsedTotal / resultCount);
     if (cacheName === "map") {
       mapMean = heapUsedMean;
     } else if (cacheName === "object") {
@@ -73,9 +64,13 @@ Object.entries(results).forEach(([cacheSizeString, cacheNames], index) => {
     }
   });
   if (index >= 1 && process.env.MEM_OUTPUT === "md") {
-    console.log(`|**${columns.join("**|**")}**|`);
+    console.log(`|**${columnNames.join("**|**")}**|`);
   }
-  const outputOrder = Object.keys(rows).sort();
+  const outputOrder = Object.keys(rows).sort(
+    (a, b) =>
+      (rows[a].usesObject ? 0 : 1) - (rows[b].usesObject ? 0 : 1) ||
+      a.localeCompare(b)
+  );
   outputOrder.forEach((cacheName) => {
     const { heapUsedMean, usesObject } = rows[cacheName];
     const baseline = usesObject ? objectMean : mapMean;
