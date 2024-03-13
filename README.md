@@ -61,6 +61,18 @@ The playground uses a combination of captured workloads and simulated repeatable
 
 A number of high quality cache captures are available online at [https://ftp.pdl.cmu.edu/pub/datasets/twemcacheWorkload/txt/](https://ftp.pdl.cmu.edu/pub/datasets/twemcacheWorkload/txt/). These were originally published as part of the [SIEVE paper](papers/nsdi24-SIEVE.pdf).
 
+The following workloads are used below.
+
+| workload                           |   totalKeys | uniqueKeys | uniquePercent |      1% |       10% |       25% |
+| ---------------------------------- | ----------: | ---------: | ------------: | ------: | --------: | --------: |
+| alibabaBlock.sample100.txt.zst     | 192,929,855 |  8,909,997 |         4.62% |  89,100 |   891,000 | 2,227,499 |
+| metaCDN.sample10.txt.zst           |   3,458,656 |  1,223,793 |        35.38% |  12,238 |   122,379 |   305,948 |
+| metaCDN.txt.zst                    |  45,623,306 | 12,245,127 |        26.84% | 122,451 | 1,224,513 | 3,061,282 |
+| metaKV.sample10.txt.zst            | 171,291,137 |  5,197,497 |         3.03% |  51,975 |   519,750 | 1,299,374 |
+| metaKV.sample100.txt.zst           |  13,124,093 |    520,066 |         3.96% |   5,201 |    52,007 |   130,017 |
+| tencentBlock.sample100.txt.zst     |  28,746,409 |  5,258,664 |        18.29% |  52,587 |   525,866 | 1,314,666 |
+| twiter_cluster52.sample100.txt.zst | 141,072,073 |  2,511,546 |         1.78% |  25,115 |   251,155 |   627,887 |
+
 ### Simulated
 
 These are primarily based on a [power law approximation](papers/0706.1062v2.pdf) or [Zipf's law](https://en.wikipedia.org/wiki/Zipf's_law).
@@ -203,6 +215,53 @@ Any mistakes in classification are mine and corrections are welcome.
 | [zf/sieve](playground/zf-sieve-cache.ts)                                      | 1.0.?\* | SIEVE | Map          | Copied and modified interface |
 
 ### Hit Ratio
+
+Each workload was tested at 1%, 10%, and 25% of the unique keys seen in the entire workload. All hit ratios are calculated based on a cold cache, that is with the cache with no data. Given the different access nature of the workloads the hit ratio varies dramatically.
+
+| workload                           | cacheSize | algorithm | hitRatio |
+| :--------------------------------- | --------: | :-------: | -------: |
+| alibabaBlock.sample100.txt.zst     |    89,100 |    LRU    |    73.55 |
+| alibabaBlock.sample100.txt.zst     |    89,100 |   SIEVE   |    75.15 |
+| alibabaBlock.sample100.txt.zst     |   891,000 |    LRU    |    87.10 |
+| alibabaBlock.sample100.txt.zst     |   891,000 |   SIEVE   |    87.98 |
+| alibabaBlock.sample100.txt.zst     | 2,227,499 |    LRU    |    91.99 |
+| alibabaBlock.sample100.txt.zst     | 2,227,499 |   SIEVE   |    92.59 |
+| metaCDN.sample10.txt.zst           |    12,238 |    LRU    |    49.52 |
+| metaCDN.sample10.txt.zst           |    12,238 |   SIEVE   |    50.01 |
+| metaCDN.sample10.txt.zst           |   122,379 |    LRU    |    57.06 |
+| metaCDN.sample10.txt.zst           |   122,379 |   SIEVE   |    57.67 |
+| metaCDN.sample10.txt.zst           |   305,948 |    LRU    |    60.91 |
+| metaCDN.sample10.txt.zst           |   305,948 |   SIEVE   |    60.83 |
+| metaCDN.txt.zst                    |   122,451 |    LRU    |    61.68 |
+| metaCDN.txt.zst                    |   122,451 |   SIEVE   |    62.06 |
+| metaCDN.txt.zst                    | 1,224,513 |    LRU    |    67.40 |
+| metaCDN.txt.zst                    | 1,224,513 |   SIEVE   |    67.87 |
+| metaCDN.txt.zst                    | 3,061,282 |    LRU    |    70.34 |
+| metaCDN.txt.zst                    | 3,061,282 |   SIEVE   |    70.29 |
+| metaKV.sample10.txt.zst            |    51,975 |    LRU    |    88.70 |
+| metaKV.sample10.txt.zst            |    51,975 |   SIEVE   |    89.48 |
+| metaKV.sample10.txt.zst            |   519,750 |    LRU    |    94.64 |
+| metaKV.sample10.txt.zst            |   519,750 |   SIEVE   |    94.99 |
+| metaKV.sample10.txt.zst            | 1,299,374 |    LRU    |    95.87 |
+| metaKV.sample10.txt.zst            | 1,299,374 |   SIEVE   |    96.23 |
+| metaKV.sample100.txt.zst           |     5,201 |    LRU    |    85.34 |
+| metaKV.sample100.txt.zst           |     5,201 |   SIEVE   |    86.35 |
+| metaKV.sample100.txt.zst           |    52,007 |    LRU    |    93.00 |
+| metaKV.sample100.txt.zst           |    52,007 |   SIEVE   |    93.47 |
+| metaKV.sample100.txt.zst           |   130,017 |    LRU    |    94.61 |
+| metaKV.sample100.txt.zst           |   130,017 |   SIEVE   |    95.07 |
+| tencentBlock.sample100.txt.zst     |    52,587 |    LRU    |    63.31 |
+| tencentBlock.sample100.txt.zst     |    52,587 |   SIEVE   |    65.71 |
+| tencentBlock.sample100.txt.zst     |   525,866 |    LRU    |    93.02 |
+| tencentBlock.sample100.txt.zst     |   525,866 |   SIEVE   |    94.08 |
+| tencentBlock.sample100.txt.zst     | 1,314,666 |    LRU    |    96.67 |
+| tencentBlock.sample100.txt.zst     | 1,314,666 |   SIEVE   |    97.19 |
+| twiter_cluster52.sample100.txt.zst |    25,115 |    LRU    |    90.26 |
+| twiter_cluster52.sample100.txt.zst |    25,115 |   SIEVE   |    90.69 |
+| twiter_cluster52.sample100.txt.zst |   251,155 |    LRU    |    95.36 |
+| twiter_cluster52.sample100.txt.zst |   251,155 |   SIEVE   |    95.59 |
+| twiter_cluster52.sample100.txt.zst |   627,887 |    LRU    |    96.80 |
+| twiter_cluster52.sample100.txt.zst |   627,887 |   SIEVE   |    96.91 |
 
 ### Memory Overhead
 
