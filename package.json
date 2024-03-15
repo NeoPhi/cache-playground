@@ -9,6 +9,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@neophi/sieve-cache": "^1.0.1",
     "@synap/sig-fig-calculator": "^3.2.3",
     "@tsconfig/node20": "^20.1.2",
     "@types/mersenne-twister": "^1.1.7",

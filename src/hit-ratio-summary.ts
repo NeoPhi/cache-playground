@@ -17,7 +17,7 @@ if (process.env.HR_OUTPUT === "md") {
 const cacheNameToAlgorithm = new Map(
   Object.entries({
     "playground/lru-uint": "LRU",
-    "playground/sieve-uint": "SIEVE",
+    "neophi/sieve-cache": "SIEVE",
   })
 );
 const seen = new Set();

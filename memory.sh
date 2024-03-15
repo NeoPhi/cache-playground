@@ -18,7 +18,7 @@ run_caches () {
   run_workload playground/sieve-map-entry
   run_workload mnemonist/lru-map-with-delete
   run_workload playground/lru-uint
-  run_workload playground/sieve-uint
+  run_workload neophi/sieve-cache
   run_workload zf/sieve
   run_workload mnemonist/lru-cache-with-delete
 }

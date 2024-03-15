@@ -3,7 +3,7 @@ import mnemonist from "mnemonist";
 import { LRUMid } from "../playground/lru-mid.js";
 import { LRUUnit } from "../playground/lru-uint.js";
 import { Sieve as SieveMapEntry } from "../playground/sieve-map-entry.js";
-import { Sieve as SieveUint } from "../playground/sieve-uint.js";
+import { SieveCache as NeoPhiSieveCache } from "@neophi/sieve-cache";
 import { parseIntFromEnv } from "./utilities.js";
 import { lru } from "tiny-lru";
 import { Sieve } from "../playground/js-sieve.js";
@@ -48,7 +48,7 @@ export const CACHES = {
 
   // SIEVE
   "js-sieve": (n: number) => new Sieve<Key, Value>(n),
-  "playground/sieve-uint": (n: number) => new SieveUint<Key, Value>(n),
+  "neophi/sieve-cache": (n: number) => new NeoPhiSieveCache<Key, Value>(n),
   "playground/sieve-map-entry": (n: number) => new SieveMapEntry<Key, Value>(n),
   "zf/sieve": (n: number) => new SieveCache<Value, Key>(n),
 };
