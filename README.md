@@ -218,6 +218,8 @@ Any mistakes in classification are mine and corrections are welcome.
 
 Each workload was tested at 1%, 10%, and 25% of the unique keys seen in the entire workload. All hit ratios are calculated based on a cold cache, that is with the cache with no data. Given the different access nature of the workloads the hit ratio varies dramatically.
 
+![SIEVE Hit Ratio Delta](images/hit-ratio.svg)
+
 | workload                           | cacheSize | algorithm | hitRatio |
 | :--------------------------------- | --------: | :-------: | -------: |
 | alibabaBlock.sample100.txt.zst     |    89,100 |    LRU    |    73.55 |
@@ -468,6 +470,8 @@ Presented in alphabetical order. `getMean`, `setMean`, and `totalTime` are all i
 ### Memory Overhead
 
 Presented in alphabetical order by `hashType`. `heapUsedMean` and `heapOverhead` are in bytes.
+
+![Memory Overhead Percentage](images/memory-overhead.svg)
 
 |     cacheSize |            cacheName            |   hashType   |     heapUsedMean |     heapOverhead |     heapOverheadPercentage |
 | ------------: | :-----------------------------: | :----------: | ---------------: | ---------------: | -------------------------: |
