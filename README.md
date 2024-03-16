@@ -473,7 +473,7 @@ Presented in alphabetical order. `getMean`, `setMean`, `totalTime`, and `weighte
 
 Presented in alphabetical order by `hashType`. `heapUsedMean` and `heapOverhead` are in bytes. A subset of results are presented in the graph.
 
-![Memory Overhead Percentage](images/memory-overhead.svg)
+![Memory Overhead Percentage](images/memory-overhead.png)
 
 |     cacheSize |            cacheName            |   hashType   |     heapUsedMean |     heapOverhead |     heapOverheadPercentage |
 | ------------: | :-----------------------------: | :----------: | ---------------: | ---------------: | -------------------------: |
