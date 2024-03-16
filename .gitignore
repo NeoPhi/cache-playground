@@ -130,6 +130,6 @@ dist
 .pnp.*
 
 # downloaded datasets
-datasets/
+datasets
 *.ldjson
 *.csv

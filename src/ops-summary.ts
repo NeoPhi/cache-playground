@@ -8,7 +8,9 @@ const columns = {
   getMean: "---:",
   setMean: "---:",
   totalTime: "---:",
+  weightedTotalTime: "---:",
   percentOfMaxTotalTime: "---:",
+  percentOfMaxWeightedTotalTime: "---:",
 };
 const columnNames = Object.keys(columns);
 console.log(`|${columnNames.join("|")}|`);
@@ -75,15 +77,22 @@ Object.keys(results)
               getMean.toLocaleString(),
               setMean.toLocaleString(),
               getCount * getMean + setCount * setMean,
+              getCount * getMean + setCount * (setMean + 1000000),
             ]);
           });
         const maxTotal = Math.max(
+          ...group.map((data) => data[data.length - 2])
+        );
+        const maxWeightedTotal = Math.max(
           ...group.map((data) => data[data.length - 1])
         );
         group.forEach((data) => {
-          const totalTime = data[data.length - 1];
-          data[data.length - 1] = totalTime.toLocaleString();
+          const totalTime = data[data.length - 2];
+          const weightedTotalTime = data[data.length - 1];
+          data[data.length - 2] = totalTime.toLocaleString();
+          data[data.length - 1] = weightedTotalTime.toLocaleString();
           data.push(((totalTime / maxTotal) * 100).toFixed(2));
+          data.push(((weightedTotalTime / maxWeightedTotal) * 100).toFixed(2));
           console.log(`|${data.join("|")}|`);
         });
       });

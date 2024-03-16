@@ -3,17 +3,14 @@ import { readFileSync } from "fs";
 const lines = readFileSync("./ops.ldjson").toString().split("\n");
 console.log(
   [
-    "workload",
-    "cacheSize",
     "scenario",
     "cacheName",
-    "hitRatio",
-    "getCount",
     "getMean",
-    "setCount",
     "setMean",
     "totalTime",
+    "weightedTotalTime",
     "percentOfMaxTotalTime",
+    "percentOfMaxWeightedTotalTime",
   ].join(",")
 );
 const results: any = {};
@@ -56,21 +53,21 @@ Object.entries(results).forEach(([workload, cacheSizes]) => {
       const getMean = Math.floor(getMeanTotal / resultCount);
       const setMean = Math.floor(setMeanTotal / resultCount);
       group.push([
-        workload,
-        cacheSize,
         `${workload} ${cacheSize}`,
         cacheName,
-        (((getCount - setCount) * 100) / getCount).toFixed(2),
-        getCount,
         getMean,
-        setCount,
         setMean,
         getCount * getMean + setCount * setMean,
+        getCount * getMean + setCount * (setMean + 1000000),
       ]);
     });
-    const maxTotal = Math.max(...group.map((data) => data[data.length - 1]));
+    const maxTotal = Math.max(...group.map((data) => data[data.length - 2]));
+    const maxWeightedTotal = Math.max(
+      ...group.map((data) => data[data.length - 1])
+    );
     group.forEach((data) => {
-      data.push(((data[data.length - 1] / maxTotal) * 100).toFixed(2));
+      data.push(((data[data.length - 2] / maxTotal) * 100).toFixed(2));
+      data.push(((data[data.length - 2] / maxWeightedTotal) * 100).toFixed(2));
       console.log(data.join(","));
     });
   });
